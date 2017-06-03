@@ -46,5 +46,9 @@ class Chan {
             fn: cb,
         };
     }
+    clear() {
+        this.values = [];
+        this.waiters = [];
+    }
 }
 exports.default = Chan;

@@ -50,5 +50,9 @@ class Chan<T> {
             fn: cb,
         };
     }
+    public clear() {
+        this.values = [];
+        this.waiters = [];
+    }
 }
 export default Chan;
