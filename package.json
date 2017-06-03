@@ -1,0 +1,29 @@
+{
+  "name": "chan2",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "tsc && tslint --project=tsconfig.json && jest --verbose --coverage",
+    "watch:test": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arvitaly/chan2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arvitaly/chan2/issues"
+  },
+  "homepage": "https://github.com/arvitaly/chan2#readme",
+  "jest": {},
+  "devDependencies": {
+    "@types/jest": "^19.2.4",
+    "coveralls": "^2.13.1",
+    "jest": "^20.0.4",
+    "tslint": "^5.4.2",
+    "typescript": "^2.3.4"
+  }
+}
