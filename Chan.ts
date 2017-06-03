@@ -31,14 +31,14 @@ class Chan<T> {
         this.waiters.push({ resolve, promise });
         return promise;
     }
-    public put(value: T) {
+    public put(value?: T) {
         const firstWaiter = this.waiters.shift();
         if (firstWaiter) {
             firstWaiter.promise.status = "resolved";
             firstWaiter.promise.value = value;
-            firstWaiter.resolve(value);
+            firstWaiter.resolve(value as any);
         } else {
-            this.values.push(value);
+            this.values.push(value as any);
         }
     }
     public unshift(value: T) {
