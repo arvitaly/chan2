@@ -13,16 +13,7 @@ it("race should resolve first channel and remove other waiters", () => __awaiter
     const chan1 = _1.makechan();
     const chan2 = _1.makechan();
     const chan3 = _1.makechan();
-    const selectPromise = _1.select({
-        chan: chan1,
-        fn: (value) => value,
-    }, {
-        chan: chan2,
-        fn: (value) => value,
-    }, {
-        chan: chan3,
-        fn: (value) => value,
-    });
+    const selectPromise = _1.select(chan1.wait((value) => value), chan2.wait((value) => value));
     chan1.put("chan1Value");
     chan2.put("chan2Value");
     expect(yield selectPromise).toBe("chan1Value");

@@ -3,16 +3,9 @@ it("race should resolve first channel and remove other waiters", async () => {
     const chan1 = makechan();
     const chan2 = makechan();
     const chan3 = makechan();
-    const selectPromise = select({
-        chan: chan1,
-        fn: (value: any) => value,
-    }, {
-            chan: chan2,
-            fn: (value: any) => value,
-        }, {
-            chan: chan3,
-            fn: (value: any) => value,
-        });
+    const selectPromise = select(
+        chan1.wait((value: any) => value),
+        chan2.wait((value: any) => value));
     chan1.put("chan1Value");
     chan2.put("chan2Value");
     expect(await selectPromise).toBe("chan1Value");

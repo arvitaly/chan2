@@ -44,5 +44,11 @@ class Chan<T> {
     public unshift(value: T) {
         this.values.unshift(value);
     }
+    public wait<S>(cb: (value: T) => S) {
+        return {
+            chan: this,
+            fn: cb,
+        };
+    }
 }
 export default Chan;

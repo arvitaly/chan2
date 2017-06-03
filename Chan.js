@@ -40,5 +40,11 @@ class Chan {
     unshift(value) {
         this.values.unshift(value);
     }
+    wait(cb) {
+        return {
+            chan: this,
+            fn: cb,
+        };
+    }
 }
 exports.default = Chan;
