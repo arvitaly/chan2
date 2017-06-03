@@ -33,6 +33,6 @@ export async function select(...selectors: Array<ISelector<any>>): Promise<any> 
     });
     await Promise.race(promises);
     isReady = true;
-    return selectors[index].fn(resValue);
+    return await selectors[index].fn(resValue);
 }
 export default makechan;

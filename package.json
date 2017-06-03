@@ -1,10 +1,10 @@
 {
   "name": "chan2",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tsc && tslint && jest --verbose --coverage",
+    "test": "tsc && tslint --project tsconfig.json && jest --verbose --coverage",
     "watch:test": "jest --watch",
     "jest": "node --trace-warnings node_modules/jest/bin/jest.js --verbose"
   },

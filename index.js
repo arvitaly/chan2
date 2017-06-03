@@ -44,7 +44,7 @@ function select(...selectors) {
         }));
         yield Promise.race(promises);
         isReady = true;
-        return selectors[index].fn(resValue);
+        return yield selectors[index].fn(resValue);
     });
 }
 exports.select = select;
