@@ -2,14 +2,37 @@ import Chan from "./Chan";
 export function makechan<T>(name?: string) {
     return new Chan<T>(name);
 }
-export async function select(...chans: Array<Chan<any>>): Promise<any> {
-    const promises = chans.map((chan) => chan.get());
-    const value = await Promise.race(promises);
-    promises.map((promise, i) => {
-        if (promise.status === "resolved") {
-            chans[i].unshift(promise.value);
+interface ISelector<T> {
+    chan: Chan<T>;
+    fn: (value: T) => any;
+}
+export function wait<T>(chan: Chan<T>) {
+    return (cb: (value: T) => any): ISelector<T> => {
+        return {
+            chan,
+            fn: cb,
+        };
+    };
+}
+export async function select(...selectors: Array<ISelector<any>>): Promise<any> {
+    let index = -1;
+    let resValue: any;
+    let isReady = false;
+    const promises = selectors.map(async (selector, i) => {
+        const value = await selector.chan.get();
+        if (index === -1) {
+            index = i;
+            resValue = value;
+        } else {
+            if (!isReady) {
+                selector.chan.unshift(value);
+            } else {
+                selector.chan.put(value);
+            }
         }
     });
-    return value;
+    await Promise.race(promises);
+    isReady = true;
+    return selectors[index].fn(resValue);
 }
 export default makechan;

@@ -13,16 +13,38 @@ function makechan(name) {
     return new Chan_1.default(name);
 }
 exports.makechan = makechan;
-function select(...chans) {
+function wait(chan) {
+    return (cb) => {
+        return {
+            chan,
+            fn: cb,
+        };
+    };
+}
+exports.wait = wait;
+function select(...selectors) {
     return __awaiter(this, void 0, void 0, function* () {
-        const promises = chans.map((chan) => chan.get());
-        const value = yield Promise.race(promises);
-        promises.map((promise, i) => {
-            if (promise.status === "resolved") {
-                chans[i].unshift(promise.value);
+        let index = -1;
+        let resValue;
+        let isReady = false;
+        const promises = selectors.map((selector, i) => __awaiter(this, void 0, void 0, function* () {
+            const value = yield selector.chan.get();
+            if (index === -1) {
+                index = i;
+                resValue = value;
             }
-        });
-        return value;
+            else {
+                if (!isReady) {
+                    selector.chan.unshift(value);
+                }
+                else {
+                    selector.chan.put(value);
+                }
+            }
+        }));
+        yield Promise.race(promises);
+        isReady = true;
+        return selectors[index].fn(resValue);
     });
 }
 exports.select = select;
