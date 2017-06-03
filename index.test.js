@@ -8,22 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Chan_1 = require("./Chan");
-function makechan(name) {
-    return new Chan_1.default(name);
-}
-exports.makechan = makechan;
-function select(...chans) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const promises = chans.map((chan) => chan.get());
-        const value = yield Promise.race(promises);
-        promises.map((promise, i) => {
-            if (promise.status === "resolved") {
-                chans[i].unshift(promise.value);
-            }
-        });
-        return value;
-    });
-}
-exports.select = select;
-exports.default = makechan;
+const _1 = require(".");
+it("race should resolve first channel and remove other waiters", () => __awaiter(this, void 0, void 0, function* () {
+    const chan1 = _1.makechan();
+    const chan2 = _1.makechan();
+    const selectPromise = _1.select(chan1, chan2);
+    chan1.put("chan1Value");
+    chan2.put("chan2Value");
+    expect(yield selectPromise).toBe("chan1Value");
+    expect(yield chan2.get()).toBe("chan2Value");
+}));

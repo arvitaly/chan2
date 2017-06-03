@@ -1,13 +1,9 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
+function toChan(promise) {
+    promise.status = "pending";
+    return promise;
+}
 class Chan {
     constructor(name) {
         this.name = name;
@@ -15,22 +11,34 @@ class Chan {
         this.waiters = [];
     }
     get() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const first = this.values.shift();
-            if (first) {
-                return first;
-            }
-            return new Promise((resolve) => this.waiters.push(resolve));
-        });
+        const first = this.values.shift();
+        let resolve;
+        if (first) {
+            const promise = toChan(new Promise((r) => {
+                resolve = r;
+            }));
+            promise.status = "resolved";
+            promise.value = first;
+            resolve(first);
+            return promise;
+        }
+        const promise = toChan(new Promise((r) => resolve = r));
+        this.waiters.push({ resolve, promise });
+        return promise;
     }
     put(value) {
         const firstWaiter = this.waiters.shift();
         if (firstWaiter) {
-            firstWaiter(value);
+            firstWaiter.promise.status = "resolved";
+            firstWaiter.promise.value = value;
+            firstWaiter.resolve(value);
         }
         else {
             this.values.push(value);
         }
+    }
+    unshift(value) {
+        this.values.unshift(value);
     }
 }
 exports.default = Chan;

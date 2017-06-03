@@ -1,11 +1,12 @@
 {
   "name": "chan2",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "tsc && tslint && jest --verbose --coverage",
-    "watch:test": "jest --watch"
+    "watch:test": "jest --watch",
+    "jest": "node --trace-warnings node_modules/jest/bin/jest.js --verbose"
   },
   "repository": {
     "type": "git",
