@@ -1,4 +1,5 @@
 import Chan from "./Chan";
+export { default as Chan } from "./Chan";
 export function makechan<T>(name?: string) {
     return new Chan<T>(name);
 }
@@ -35,4 +36,5 @@ export async function select(...selectors: Array<ISelector<any>>): Promise<any> 
     isReady = true;
     return await selectors[index].fn(resValue);
 }
+
 export default makechan;

@@ -9,6 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Chan_1 = require("./Chan");
+var Chan_2 = require("./Chan");
+exports.Chan = Chan_2.default;
 function makechan(name) {
     return new Chan_1.default(name);
 }
