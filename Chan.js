@@ -14,13 +14,13 @@ class Chan {
         const first = this.values.shift();
         let resolve;
         if (first) {
-            const promise = toChan(new Promise((r) => {
+            const pr = toChan(new Promise((r) => {
                 resolve = r;
             }));
-            promise.status = "resolved";
-            promise.value = first;
+            pr.status = "resolved";
+            pr.value = first;
             resolve(first);
-            return promise;
+            return pr;
         }
         const promise = toChan(new Promise((r) => resolve = r));
         this.waiters.push({ resolve, promise });

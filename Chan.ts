@@ -19,13 +19,13 @@ class Chan<T> {
         const first = this.values.shift();
         let resolve: any;
         if (first) {
-            const promise = toChan(new Promise((r) => {
+            const pr = toChan(new Promise<T>((r) => {
                 resolve = r;
             }));
-            promise.status = "resolved";
-            promise.value = first;
+            pr.status = "resolved";
+            pr.value = first;
             resolve(first);
-            return promise;
+            return pr;
         }
         const promise = toChan(new Promise<T>((r) => resolve = r));
         this.waiters.push({ resolve, promise });
