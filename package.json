@@ -21,10 +21,10 @@
   "homepage": "https://github.com/arvitaly/chan2#readme",
   "jest": {},
   "devDependencies": {
-    "@types/jest": "^19.2.4",
-    "coveralls": "^2.13.1",
-    "jest": "^21.1.0",
-    "tslint": "^5.7.0",
-    "typescript": "^2.5.2"
+    "@types/jest": "^21.1.4",
+    "coveralls": "^3.0.0",
+    "jest": "^21.2.1",
+    "tslint": "^5.8.0",
+    "typescript": "^2.5.3"
   }
 }
